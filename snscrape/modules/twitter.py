@@ -649,7 +649,7 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 		return self._make_tweet(tweet, user, **kwargs)
 
 	def _graphql_timeline_tweet_item_result_to_tweet(self, result):
-		if result['__typename'] == 'Tweet':_make
+		if result['__typename'] == 'Tweet':
 			pass
 		elif result['__typename'] == 'TweetWithVisibilityResults':
 			#TODO Include result['softInterventionPivot'] in the Tweet object
