@@ -610,8 +610,12 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 				i = kwargs['tcooutlinks'].index(card.url)
 			except ValueError:
 				_logger.warning('Could not find card URL in tcooutlinks')
+			except KeyError:
+				_logger.warning('Could not find key tcooutlinks')
 			else:
 				card.url = kwargs['outlinks'][i]
+				
+				
 		return Tweet(**kwargs)
 
 	def _make_card(self, card, apiType):
@@ -629,6 +633,8 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 				cardKwargs[kwarg] = value['image_value']['url']
 			else:
 				raise snscrape.base.ScraperError(f'Unknown card value type: {value["type"]!r}')
+		if 'title' not in cardKwargs:
+			cardKwargs['title'] = 'THIS IS A TWEET LINKING A TWITTER SPACE'
 		return Card(**cardKwargs)
 
 	def _tweet_to_tweet(self, tweet, obj):
@@ -643,7 +649,7 @@ class _TwitterAPIScraper(snscrape.base.Scraper):
 		return self._make_tweet(tweet, user, **kwargs)
 
 	def _graphql_timeline_tweet_item_result_to_tweet(self, result):
-		if result['__typename'] == 'Tweet':
+		if result['__typename'] == 'Tweet':_make
 			pass
 		elif result['__typename'] == 'TweetWithVisibilityResults':
 			#TODO Include result['softInterventionPivot'] in the Tweet object
